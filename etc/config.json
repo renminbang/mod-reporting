@@ -1,0 +1,16 @@
+{
+  "logging": {
+    "categories": "config,listen,path,error",
+    "prefix": "",
+    "timestamp": true
+  },
+  "listen": {
+    "host": "0.0.0.0",
+    "port": 12369
+  },
+  "queryTimeout": 120,
+  "DISABLED__reportUrlWhitelist": [
+    "^https://gitlab.com/api/v4/projects/MikeTaylor%2F",
+    "^https://raw.githubusercontent.com/metadb-project/"
+  ]
+}

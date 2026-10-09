@@ -1,0 +1,188 @@
+{
+  "id" : "@artifactId@-@version@",
+  "name" : "reporting module",
+  "provides" : [ {
+    "id" : "ldp-query",
+    "version" : "1.4",
+    "handlers": [
+      {
+        "methods": [ "GET" ],
+        "pathPattern" : "/ldp/db/log",
+        "permissionsRequired": [ "ldp.log.get" ],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods": [ "GET" ],
+        "pathPattern" : "/ldp/db/columns",
+        "permissionsRequired": [ "ldp.columns.get" ],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods": [ "GET" ],
+        "pathPattern" : "/ldp/db/tables",
+        "permissionsRequired": [ "ldp.tables.get" ],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods": [ "POST" ],
+        "pathPattern" : "/ldp/db/query",
+        "permissionsRequired": [ "ldp.query.post" ],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods": [ "POST" ],
+        "pathPattern" : "/ldp/db/reports",
+        "permissionsRequired": [ "ldp.reports.post" ],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods" : [ "PUT" ],
+        "pathPattern" : "/ldp/config/{id}",
+        "permissionsRequired" : [ "ldp.config.edit"],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.entries.item.post",
+          "mod-settings.entries.item.put",
+          "mod-settings.global.read.ui-ldp.admin",
+          "mod-settings.global.write.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods" : [ "GET" ],
+        "pathPattern" : "/ldp/config*",
+        "permissionsRequired" : [ "ldp.config.read"],
+        "modulePermissions" : [
+          "mod-settings.entries.collection.get",
+          "mod-settings.global.read.ui-ldp.admin"
+        ]
+      },
+      {
+        "methods" : [ "GET" ],
+        "pathPattern" : "/ldp/db/version",
+        "permissionsRequired" : [ "ldp.version.read"]
+      },
+      {
+        "methods" : [ "GET" ],
+        "pathPattern" : "/ldp/db/updates",
+        "permissionsRequired" : [ "ldp.updates.read"]
+      },
+      {
+        "methods" : [ "GET" ],
+        "pathPattern" : "/ldp/db/processes",
+        "permissionsRequired" : [ "ldp.processes.read"]
+      }
+    ]
+  } ],
+  "requires": [
+    {
+      "id": "settings",
+      "version": "1.0"
+    }
+  ],
+  "permissionSets": [
+    {
+      "description": "Read LDP log",
+      "displayName": "LDP -- Read log",
+      "permissionName": "ldp.log.get"
+    },
+    {
+      "description": "Read LDP columns",
+      "displayName": "LDP -- Read columns",
+      "permissionName": "ldp.columns.get"
+    },
+    {
+      "description": "Read LDP tables",
+      "displayName": "LDP -- Read tables",
+      "permissionName": "ldp.tables.get"
+    },
+    {
+      "description": "Send LDP query",
+      "displayName": "LDP -- send form query",
+      "permissionName": "ldp.query.post"
+    },
+    {
+      "description": "Send LDP reports",
+      "displayName": "LDP -- send reports",
+      "permissionName": "ldp.reports.post"
+    },
+    {
+      "description": "Read LDP data",
+      "displayName": "LDP -- Read",
+      "permissionName": "ldp.read",
+      "subPermissions": [
+        "ldp.log.get",
+        "ldp.columns.get",
+        "ldp.tables.get",
+        "ldp.query.post",
+        "ldp.reports.post"
+      ]
+    },
+    {
+      "description" : "Read LDP configuration data",
+      "displayName": "LDP Config -- Read",
+      "permissionName": "ldp.config.read"
+    },
+    {
+      "description" : "Edit LDP configuration data",
+      "displayName" : "LDP Config -- Edit",
+      "permissionName" : "ldp.config.edit"
+    },
+    {
+      "description" : "Obtain the version of Metadb the module is connected to",
+      "displayName" : "LDP -- Read version",
+      "permissionName" : "ldp.version.read"
+    },
+    {
+      "description" : "Obtain information about last-updated times of data tables",
+      "displayName" : "LDP -- Read updates",
+      "permissionName" : "ldp.updates.read"
+    },
+    {
+      "description" : "Obtain information about long-running search processes",
+      "displayName" : "LDP -- Read processes",
+      "permissionName" : "ldp.processes.read"
+    },
+    {
+      "description" : "All LDP permissions",
+      "displayName" : "LDP -- All",
+      "permissionName" : "ldp.all",
+      "subPermissions" : [
+        "ldp.read",
+        "ldp.config.read",
+        "ldp.config.edit",
+        "ldp.version.read",
+        "ldp.updates.read",
+        "ldp.processes.read"
+      ]
+    }
+  ],
+  "launchDescriptor" : {
+    "dockerImage": "@artifactId@:@version@",
+    "dockerPull": false,
+    "dockerArgs": {
+      "HostConfig": {
+        "Memory": 100000000,
+        "PortBindings": { "12369/tcp": [ { "HostPort": "%p" } ] }
+      }
+    },
+    "env": [
+      { "name": "LOGCAT", "value": "listen,path,op,status,db,error" },
+      { "name": "MOD_REPORTING_QUERY_TIMEOUT", "value": "300" }
+    ]
+  }
+}
